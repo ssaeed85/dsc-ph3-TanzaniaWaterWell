@@ -2,6 +2,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def colInfo(col):
+    """
+    Helper function to print out information regarding a pandas Series (DataFrame column)
+    
+    col = pd.Series
+    
+    float: bar plot
+    int: histogram plot
+    object: bar plot of top 10 occurcences. If number of itmes > 15, plot additional bottom 5 occurences
+    """
     len_Col = col.shape[0]
     num_zeroes = (col == 0).sum()
     num_missing = col.isna().sum()
@@ -9,8 +18,7 @@ def colInfo(col):
     median = 0
     uniques = len(col.unique())
     try:
-        num_unknowns = ((col.str.lower() == 'unknown') | (
-            col.str.lower() == ' ') | (col.str.lower() == '')).sum()
+        num_unknowns = (col.map(lambda x: x.lower() in ['unknown', ' ', '']).sum())
     except:
         num_unknowns = 0
 
@@ -31,19 +39,22 @@ def colInfo(col):
         ['Median', f'{median:.2f}', '-'],
     ]
     
-    info_table = pd.DataFrame(
-        data, columns=['', 'Number', 'Percentage']).set_index('').style.set_caption("Table Info")
-    display(info_table)
+    info_table = pd.DataFrame(data, columns=['', 'Number', 'Percentage']).set_index('').style.set_caption("Table Info")
     
+    #Creating Value Count Table
     vCountNum = col.value_counts()
     vCountPct = col.value_counts(normalize=True)*100
     vCountNum.name = 'Value Count'
     vCountPct.name = '% Value Count'
-     
+    
+    #Limiting Table to top 10
     value_count_table = pd.concat([vCountNum,vCountPct], axis=1)
     value_count_table = value_count_table.iloc[:10].style.set_caption("Top 10 Value Count Info")
-    display(value_count_table)
+    
+    # Display Tables as Panda DataFrames
+    display(info_table,value_count_table)
 
+    # Display plots depending upon datatype
     if col.dtype == 'float64':
         fig, ax = plt.subplots(figsize=(15, 8))
         plt.plot(col)
