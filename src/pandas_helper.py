@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
+from sklearn.model_selection import GridSearchCV, cross_val_score,cross_val_predict, cross_validate
 
 def colInfo(col):
     """
@@ -87,3 +89,86 @@ def colInfo(col):
             col.value_counts().iloc[-5:].plot(kind='bar')
             plt.title('Frequency of bottom 5: '+col.name)
             plt.ylabel(col.name)
+            
+            
+def modelReport(model, X, y):
+    '''
+    Prints out cross validation test scoring metrics as a Pandas dataframe
+    Displays a confusion matrix of the cross validation
+    '''
+
+    # Using cross_val_predict to create a confusion matrix
+    preds = cross_val_predict(estimator=model, X=X, y=y)
+    cm = confusion_matrix(y, preds, labels=model.classes_)
+    disp = ConfusionMatrixDisplay(cm, display_labels=model.classes_)
+    fig, ax = plt.subplots(figsize=(8, 8))
+    disp.plot(cmap='OrRd', ax=ax)
+
+    # Getting cross val scores
+    getAllCrossValScores(model, X, y)
+
+
+def getAllCrossValScores(model, X, y):
+    '''
+    Prints out cross validation test scoring metrics as a Pandas dataframe
+    acc = Accuracy
+    pr =  Precision (macro)
+    re =  Recall (macro)
+    f1 =  F1-score (macro)
+    '''
+    # Using cross_validate to generate accuracy, recall, precision and f1-scores
+    cv = cross_validate(model, X, y, scoring=[
+                        'accuracy', 'precision_macro', 'recall_macro', 'f1_macro'])
+    acc = cv['test_accuracy'].mean()
+    pr = cv['test_precision_macro'].mean()
+    re = cv['test_recall_macro'].mean()
+    f1 = cv['test_f1_macro'].mean()
+
+    data = [
+        ['Accuracy',  f'{acc:.4f}'],
+        ['Precision', f'{pr:.4f}'],
+        ['Recall', f'{re:.4f}'],
+        ['F1', f'{f1:.4f}'],
+    ]
+
+    info_table = pd.DataFrame(data, columns=['', 'Scores']).set_index(
+        '').style.set_caption("Cross Validation Results")
+    display(info_table)
+
+
+def prettyPrintGridCVResults(GSCVModel):
+    '''
+    Tabulates results a grid search.
+    Ranks by accuracy
+    Shows all 4 mean test metrics: Accuracy, Precision Macro, Recall Macro, F1-score Macro
+    Shows all parameters used for that model
+    '''
+    
+    list_cols = ['rank_test_accuracy']
+    list_metrics = ['mean_test_accuracy', 'mean_test_precision_macro',
+                      'mean_test_recall_macro', 'mean_test_f1_macro']
+    list_cols.extend(list_metrics)
+
+    for col in GSCVModel.cv_results_.keys():
+        if col.startswith('param_'):
+            list_cols.append(col)
+    
+    
+
+
+    table = pd.DataFrame(GSCVModel.cv_results_)
+    for m in list_metrics:
+        table[m] = table[m].map('{:,.4f}'.format)
+    table = table[list_cols].sort_values(by='rank_test_accuracy')
+    
+
+        
+    table.rename(columns={'rank_test_accuracy': 'Rank (By Accuracy)',
+                          'mean_test_accuracy': 'Mean Test Accuracy',
+                          'mean_test_precision_macro': 'Mean Test Precision (macro)',
+                          'mean_test_recall_macro': 'Mean Test Recall (macro)',
+                          'mean_test_f1_macro': 'Mean Test F1-Score (macro)'
+                          }, inplace=True)
+    
+
+    return table.set_index('Rank (By Accuracy)')

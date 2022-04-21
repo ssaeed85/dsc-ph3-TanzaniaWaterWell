@@ -1,6 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
 
+
 class CoordinatesImputer(BaseEstimator, TransformerMixin):
     '''
     Original code author: Eryk Lewinson. Modified to work with our latitude and longitude column
@@ -58,3 +59,9 @@ class CoordinatesImputer(BaseEstimator, TransformerMixin):
             X.loc[ind, self.group_cols] = self.impute_map_.loc[X.loc[ind, self.groupByTarget]]
         
         return X.drop(self.groupByTarget, axis = 1) #dropping the group by target column
+    
+
+    
+    
+
+    
