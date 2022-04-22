@@ -30,7 +30,7 @@ Looking at past water well data, I believe we can help the Tanzanian government 
 
 # Data:
 
-To load the data in your local directory please refer to [GetDatasets](Notebook_GetDataSets.ipynb) notebook.
+>To load the data in your local directory please refer to [GetDatasets](Notebook_GetDataSets.ipynb) notebook.
 
 The data was gathered from [drivendata.com](https://www.drivendata.org/competitions/7/pump-it-up-data-mining-the-water-table/) who in turn had gathered it from Taarifa and the Tanzanian Ministry of Water. The dataset covers nearly 60,000 different water well sites across the years going as far back as 1960. 
 
@@ -38,7 +38,7 @@ Each record has a total of 39 input features. Each record has multiclass label t
 
 The goal is to be able to predict with a level certainty the operating conditions of a well site given its details.
 
-For a detailed analysis of the dataset please refer to [DataExploration](Notebook_DataExploration.ipynb) notebook.
+>For a detailed analysis of the dataset please refer to [DataExploration](Notebook_DataExploration.ipynb) notebook.
 
 # Hurdles:
 
@@ -73,7 +73,8 @@ I started off with a Dummy Classifier to help establish a baseline to compare al
 
 I also employed SMOTE on a few hypertuned parameters to help with the class imbalance.
 
-To see the detailed modeling process please refer to the [DataModeling]
+>To see the detailed modeling process please refer to the [DataModeling]
+
 
 Using an iterative process we were able to find our final model in a hypertuned XGBoost Random Classifier. The classification report for this is as follows.
 
@@ -134,6 +135,7 @@ We can improve with more data associated with sites like these or further resear
 [machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn](https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/)\
 [towardsdatascience.com/coding-a-custom-imputer-in-scikit-learn](https://towardsdatascience.com/coding-a-custom-imputer-in-scikit-learn-31bd68e541de)\
 [geodata.lib.berkeley.edu - national and district boundaries geojson](https://geodata.lib.berkeley.edu/catalog/stanford-gn214np6763 )\
-[autogis-site.readthedocs - for handling shape files](https://geodata.lib.berkeley.edu/)
+[autogis-site.readthedocs - for handling shape files](https://autogis-site.readthedocs.io/en/latest/notebooks/L1/geometric-objects.html?highlight=shape)\
+[Tanzanian region boundary geojson](https://data.humdata.org/dataset/geoboundaries-admin-boundaries-for-united-republic-of-tanzania?)
 [geoportal.icpac.net - riverways geojson](http://geoportal.icpac.net/layers/geonode%3Atza_water_lines_dcw)\
 Image used in banner is property of [constructionreviewonline.com](https://constructionreviewonline.com/news/tanzania/usaid-to-fund-tanzania-water-projects/)
