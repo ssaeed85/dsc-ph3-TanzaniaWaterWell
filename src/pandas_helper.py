@@ -1,7 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, classification_report
 from sklearn.model_selection import GridSearchCV, cross_val_score,cross_val_predict, cross_validate
+
 
 def colInfo(col):
     """
@@ -91,21 +92,40 @@ def colInfo(col):
             plt.ylabel(col.name)
             
             
-def modelReport(model, X, y):
+def modelReport(model, X, y,cv=True):
     '''
     Prints out cross validation test scoring metrics as a Pandas dataframe
     Displays a confusion matrix of the cross validation
+    
+    model = estimator to use for report generation
+    X = input 
+    y = output/label
+    cv = Generates a cross validation report.
+         If set to false generates scoring/classification report using current X,y report. Model needs to be prefit
+    
     '''
-
-    # Using cross_val_predict to create a confusion matrix
-    preds = cross_val_predict(estimator=model, X=X, y=y)
+    
+    # Using cross_val_predict or model.predict to create a confusion matrix
+    preds = cross_val_predict(estimator=model, X=X, y=y)    
+#     if cv:
+#         preds = cross_val_predict(estimator=model, X=X, y=y)
+#     else:
+#         preds = model.predict(X)
+        
     cm = confusion_matrix(y, preds, labels=model.classes_)
     disp = ConfusionMatrixDisplay(cm, display_labels=model.classes_)
     fig, ax = plt.subplots(figsize=(8, 8))
     disp.plot(cmap='OrRd', ax=ax)
 
-    # Getting cross val scores
-    getAllCrossValScores(model, X, y)
+    if cv:
+        # Getting cross val scores
+        return (disp,getAllCrossValScores(model, X, y))
+    else:
+        # Print classification report
+        c_report = classification_report(y, preds, output_dict=True)
+        return(disp,pd.DataFrame(c_report).transpose)
+
+
 
 
 def getAllCrossValScores(model, X, y):
@@ -133,7 +153,7 @@ def getAllCrossValScores(model, X, y):
 
     info_table = pd.DataFrame(data, columns=['', 'Scores']).set_index(
         '').style.set_caption("Cross Validation Results")
-    display(info_table)
+    return(info_table)
 
 
 def prettyPrintGridCVResults(GSCVModel):
