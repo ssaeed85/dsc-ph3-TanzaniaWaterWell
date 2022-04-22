@@ -118,7 +118,7 @@ def modelReport(model, X, y,cv=True):
     disp.plot(cmap='OrRd', ax=ax)
 
     # Getting cross val scores
-    return (disp,getAllCrossValScores(model, X, y))
+    getAllCrossValScores(model, X, y)
 
 
 def getAllCrossValScores(model, X, y):
