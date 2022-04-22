@@ -80,7 +80,7 @@ def colInfo(col):
         
         if len(col.value_counts()) < 30:
             fig, ax = plt.subplots(figsize=(15, 8))
-            col.value_counts().iloc[:10].plot(kind='bar')
+            col.value_counts().iloc[:10].plot(kind='bar', color = bToG)
             plt.title('Frequency of top 10: '+col.name)
             plt.ylabel(col.name)
     
