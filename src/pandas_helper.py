@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, classification_report
 from sklearn.model_selection import GridSearchCV, cross_val_score,cross_val_predict, cross_validate
 
+# Color swatches
+bToG = ['#0300c3', '#042492', '#053b83', '#055274', '#05616a',
+          '#067a59', '#068c4d', '#07ad37', '#08c626', '#09ff00']
+yToR = ['#fcb045', '#fc8439', '#fc5e2f', '#fc4227', '#fd1d1d']
+
 
 def colInfo(col):
     """
@@ -81,13 +86,13 @@ def colInfo(col):
     
     elif col.dtype == 'O':
         fig, ax = plt.subplots(figsize=(15, 8))
-        col.value_counts().iloc[:10].plot(kind='bar')
+        col.value_counts().iloc[:10].plot(kind='bar', color = bToG)
         plt.title('Frequency of top 10: '+col.name)
         plt.ylabel(col.name)
         
         if len(col.value_counts()) > 15:
             fig, ax = plt.subplots(figsize=(15, 8))
-            col.value_counts().iloc[-5:].plot(kind='bar')
+            col.value_counts().iloc[-5:].plot(kind='bar', color = yToR)
             plt.title('Frequency of bottom 5: '+col.name)
             plt.ylabel(col.name)
             
@@ -100,32 +105,20 @@ def modelReport(model, X, y,cv=True):
     model = estimator to use for report generation
     X = input 
     y = output/label
-    cv = Generates a cross validation report.
-         If set to false generates scoring/classification report using current X,y report. Model needs to be prefit
+    cv = Generates a cross validation report
     
     '''
     
     # Using cross_val_predict or model.predict to create a confusion matrix
-    preds = cross_val_predict(estimator=model, X=X, y=y)    
-#     if cv:
-#         preds = cross_val_predict(estimator=model, X=X, y=y)
-#     else:
-#         preds = model.predict(X)
+    preds = cross_val_predict(estimator=model, X=X, y=y)  
         
     cm = confusion_matrix(y, preds, labels=model.classes_)
     disp = ConfusionMatrixDisplay(cm, display_labels=model.classes_)
     fig, ax = plt.subplots(figsize=(8, 8))
     disp.plot(cmap='OrRd', ax=ax)
 
-    if cv:
-        # Getting cross val scores
-        return (disp,getAllCrossValScores(model, X, y))
-    else:
-        # Print classification report
-        c_report = classification_report(y, preds, output_dict=True)
-        return(disp,pd.DataFrame(c_report).transpose)
-
-
+    # Getting cross val scores
+    return (disp,getAllCrossValScores(model, X, y))
 
 
 def getAllCrossValScores(model, X, y):
