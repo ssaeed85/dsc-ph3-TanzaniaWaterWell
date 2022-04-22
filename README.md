@@ -90,9 +90,18 @@ Using an iterative process we were able to find our final model in a hypertuned 
 ![img](./images/confusion_matrices/XGBoost%20-%20Hypertune%204.jpg)
 ![img](./images/normalized_confusion_matrices/XGBoost%20-%20Hypertune%204.jpg)
 
-One area we really need to improve on is our ability to predict water well sites that are in need of repair. 
+One area we really need to improve on is our ability to predict well sites that are in need of repair. Knowing if a site is operational but needs repairs, can be key in ensuring a consistent clean water supply as you'll be able to address any issues before the site fails.
 
 We can improve with more data associated with sites like these or further researching how to handle class imbalances.
+
+
+Using this model we can see how our model performs across the country of Tanzania.
+
+![img](./images/Regional%20Accuracy.png)
+
+This map displays our regional accuracy of being able to classify a well site with the black regions signifying regions we are in the process of collecting well data on.
+
+As it stand currently, our weakest when it comes to predictions is Kigoma,the west most point of Tanzania. I highly recommend keeping a closer watch as we continue to improve our models.
 
 # Further steps:
 
