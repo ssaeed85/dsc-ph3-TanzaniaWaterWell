@@ -134,6 +134,6 @@ We can improve with more data associated with sites like these or further resear
 [machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn](https://machinelearningmastery.com/save-load-machine-learning-models-python-scikit-learn/)\
 [towardsdatascience.com/coding-a-custom-imputer-in-scikit-learn](https://towardsdatascience.com/coding-a-custom-imputer-in-scikit-learn-31bd68e541de)\
 [geodata.lib.berkeley.edu - national and district boundaries geojson](https://geodata.lib.berkeley.edu/catalog/stanford-gn214np6763 )\
-[autogis-site.readthedocs - for handling shape files](https://geodata.lib.berkeley.edu/?utf8=%E2%9C%93&search_field=all_fields&q=tanzania)
+[autogis-site.readthedocs - for handling shape files](https://geodata.lib.berkeley.edu/)
 [geoportal.icpac.net - riverways geojson](http://geoportal.icpac.net/layers/geonode%3Atza_water_lines_dcw)\
 Image used in banner is property of [constructionreviewonline.com](https://constructionreviewonline.com/news/tanzania/usaid-to-fund-tanzania-water-projects/)
